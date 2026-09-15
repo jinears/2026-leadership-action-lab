@@ -101,7 +101,7 @@
     <p style="color:var(--ice);margin-top:10px">거창한 목표를 세울 필요는 없습니다.<br>회의에서 한 번 더 질문하기, 결정 전 한 번 더 생각하기, 구성원에게 한 번 더 피드백하기처럼<br><strong style="color:#fff">작은 행동 하나의 변화에서 시작해 보세요.</strong></p>
     <p style="color:var(--ice);margin-top:10px">설문 시작 전 <strong style="color:#fff">개인 리더십 진단 결과지 PDF</strong>를 먼저 열어두시고,<br>결과지를 천천히 살펴보며 지금 나에게 필요한 변화가 무엇인지 생각해 본 후 작성해 주세요.</p>
     <p style="color:#9AA6C9;margin-top:12px">※ 작성 내용은 향후 리더십 코칭 및 교육 프로그램 설계에 활용되며, 인사평가에는 반영되지 않습니다.</p>
-    <p style="color:#E8A838;margin-top:8px;font-size:13px">⏰ 제출 기한: 2026년 9월 22일(화) 18:00</p>
+    <p style="color:#E8A838;margin-top:8px;font-size:13px">⏰ 제출 기한: 2026년 9월 21일(월) 18:00</p>
   </div></header>
 
   <main>
@@ -109,8 +109,8 @@
     <div class="sec">
       <div class="sec-h">응답자 정보</div>
       <div class="q"><label class="qt">사번<span class="req">*</span></label>
-        <input type="text" id="emp_no" placeholder="사번을 입력하세요" maxlength="9" inputmode="numeric">
-        <div class="hint"> 9자리 숫자로 입력해 주세요. (예: 202600001)</div>
+        <input type="text" id="emp_no" placeholder="9자리 사번을 입력하세요" maxlength="9" inputmode="numeric">
+        <div class="hint">숫자 9자리로 입력해 주세요. (예: 202600001)</div>
       </div>
       <div class="q"><label class="qt">직책<span class="req">*</span></label>
         <div class="radio-row" id="role">
@@ -119,18 +119,18 @@
         </div>
         <div class="hint">직책에 따라 아래 행동 실험 참고 내용이 달라집니다.</div>
       </div>
-      <div class="q"><label class="qt">소속 (사업부/실/팀)</label><input type="text" id="dept" placeholder="예) 인재확보팀"></div>
+      <div class="q"><label class="qt">소속 (사업부/실/팀)</label><input type="text" id="dept" placeholder="예) 금융혁신추진팀"></div>
     </div>
 
     <!-- 섹션 1 -->
     <div class="sec">
       <div class="sec-h">1. 자각 — 나의 Blind Spot</div>
-      <div class="sec-d">리더십 진단 결과지의 '진단 결과-자기 객관화' 페이지(p.8)를 참고하세요.</div>
-      <div class="q"><label class="qt">본인과 타인(상사·팀원) 점수 격차가 가장 컸던 영역은 무엇입니까?<span class="req">*</span></label>
-        <div class="hint">'내 결과 평균점수'가 '셀프진단'보다 높거나 낮은 영역 중 격차가 가장 큰 역량을 선택하세요.<br>※ 점수 차이가 동일한 경우 최대 3개까지 선택 가능합니다.</div>
+      <div class="sec-d">진단 결과지의 자기객관화(본인 vs 타인) 페이지를 참고하세요.</div>
+      <div class="q"><label class="qt">본인과 타인(상사·팀원) 점수 격차가 가장 컸던 영역은?<span class="req">*</span></label>
+        <div class="hint">진단 결과지의 '진단 결과-자기 객관화' 페이지(p.8)를 확인해 주세요. '내 결과 평균점수'가 '셀프진단'보다 높거나 낮은 영역 중 격차가 가장 큰 역량을 선택하세요.<br>※ 점수 차이가 동일한 경우 최대 3개까지 선택 가능합니다.</div>
         <div class="comp-grid" id="gap_comps"></div>
       </div>
-      <div class="q"><label class="qt">주관식 코멘트(Start·Stop)에서 가장 예상하지 못했던 피드백은 무엇입니까?<span class="req">*</span></label><textarea id="surprise_fb"></textarea></div>
+      <div class="q"><label class="qt">주관식 코멘트(Start·Stop)에서 가장 예상하지 못했던 피드백은?<span class="req">*</span></label><textarea id="surprise_fb"></textarea></div>
       <div class="q"><label class="qt">이번 분기에 집중해서 성장시킬 역량 1개를 선택하세요.<span class="req">*</span></label>
         <div class="comp-grid" id="comps"></div>
         <div class="ref" id="ref"></div>
@@ -140,26 +140,26 @@
     <!-- 섹션 2 -->
     <div class="sec">
       <div class="sec-h">2. 나의 리더십 행동 실험</div>
-      <div class="sec-d">위 참고 카드에서 하나를 선택하거나, 참고하여 직접 작성하시면 됩니다. 거창한 계획보다 '진짜 해낼 하나의 행동'을 작성하시기 바랍니다.</div>
+      <div class="sec-d">위 참고 카드에서 하나를 눌러 가져오거나, 참고해 직접 적어도 됩니다. 거창한 계획보다 '진짜 해낼 하나'가 강력합니다.</div>
       <div class="q"><label class="qt">이번 분기에 실천할 목표 행동<span class="req">*</span></label><textarea id="action_exp" placeholder="예) 결정 전, 대안 2개와 각각의 리스크를 표로 비교한 뒤 고른다"></textarea></div>
-      <div class="q"><label class="qt">이 행동을 구체적으로 — 언제·누구에게·무엇을 하겠습니까?<span class="req">*</span></label><textarea id="action_how" placeholder="한 문장으로 적어주세요"></textarea></div>
+      <div class="q"><label class="qt">이 행동을 구체적으로 — 언제·누구에게·무엇을?<span class="req">*</span></label><textarea id="action_how" placeholder="한 문장으로 적어주세요"></textarea></div>
       <div class="q"><label class="qt">실천 빈도<span class="req">*</span></label>
         <select id="frequency"><option value="">선택하세요</option><option>매일</option><option>주 2~3회</option><option>주 1회</option><option>격주 1회</option><option>월 1회</option><option>분기 1회</option></select></div>
-      <div class="q"><label class="qt">잊지 않기 위한 나만의 실행 장치(넛지)는 무엇입니까? <span class="req">*</span></label><input type="text" id="nudge" placeholder="예) 매주 금요일 캘린더 알림 / 회의 어젠다 고정 항목"></div>
+      <div class="q"><label class="qt">잊지 않기 위한 나만의 실행 장치(넛지)<span class="req">*</span></label><input type="text" id="nudge" placeholder="예) 매주 금요일 캘린더 알림 / 회의 어젠다 고정 항목"></div>
     </div>
 
     <!-- 섹션 3 -->
     <div class="sec">
       <div class="sec-h">3. 학습·성장 지원</div>
-      <div class="q"><label class="qt">목표 역량과 관련해 함께 나누고 싶은 고민 또는 안건, 필요한 지원은 무엇입니까?<span class="req">*</span></label><textarea id="concern" placeholder="예) 세대가 다른 팀원과의 소통 / 믿고 맡기는 위임"></textarea></div>
-      <div class="q"><label class="qt">다음 중 관심 있는 프로그램을 선택하세요. (최대 3개)<span class="req">*</span></label>
+      <div class="q"><label class="qt">목표 역량과 관련해 함께 나누고 싶은 고민이나 필요한 지원은?<span class="req">*</span></label><textarea id="concern" placeholder="예) 세대가 다른 팀원과의 소통 / 믿고 맡기는 위임"></textarea></div>
+      <div class="q"><label class="qt">관심 있는 교육 프로그램을 선택하세요. (최대 3개)<span class="req">*</span></label>
         <div class="prog-grid" id="programs"></div>
         <div class="prog-detail" id="prog_detail"></div></div>
     </div>
 
     <button class="submit" id="submit">제출하기</button>
     <div class="msg" id="msg"></div>
-    <div class="note">제출 후 화면에 완료 메시지가 뜨면 정상 접수된 것입니다. 문의: 인재확보팀 이진 프로</div>
+    <div class="note">제출 후 화면에 완료 메시지가 뜨면 정상 접수된 것입니다. 문의: HRD팀</div>
   </main>
 
 <script>
@@ -365,7 +365,7 @@
 
     const btn=document.getElementById("submit"); btn.disabled=true; btn.textContent="제출 중...";
     if(!sb){
-      if(typeof supabase==="undefined"){ msg.className="msg err"; msg.textContent="네트워크 연결(Supabase 라이브러리 로드)에 실패했어요. 사내망 방화벽을 확인하거나 HRD팀에 문의해주세요."; btn.disabled=false; btn.textContent="제출하기"; return; }
+      if(typeof supabase==="undefined"){ msg.className="msg err"; msg.textContent="네트워크 연결(Supabase 라이브러리 로드)에 실패했어요. 사내망 방화벽을 확인하거나 인재확보팀에 문의해주세요."; btn.disabled=false; btn.textContent="제출하기"; return; }
       sb=supabase.createClient(SUPA_URL,SUPA_KEY);
     }
     const row={
@@ -380,7 +380,7 @@
       msg.className="msg ok"; msg.textContent="제출 완료! 소중한 계획 감사합니다. 2주 뒤 첫 실천 점검 안내를 드릴게요.";
       btn.textContent="제출 완료"; window.scrollTo(0,document.body.scrollHeight);
     }catch(e){
-      msg.className="msg err"; msg.textContent="제출 중 오류가 발생했어요: "+(e.message||e)+" — 잠시 후 다시 시도하거나 HRD팀에 문의해주세요.";
+      msg.className="msg err"; msg.textContent="제출 중 오류가 발생했어요: "+(e.message||e)+" — 잠시 후 다시 시도하거나 인재확보팀 담당자에게 문의해주세요.";
       btn.disabled=false; btn.textContent="제출하기";
     }
   });
