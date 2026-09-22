@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>리더십 개발 계획 — 데이터 내보내기</title>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const cfg = {
+    apiKey: "AIzaSyDCr3zZlA0ZAnGDYf8i4LfJw9fZc_QXySM",
+    projectId: "2026-leadership-action-lab"
+  };
+  const app  = initializeApp(cfg);
+  const db   = getFirestore(app);
+
+  const COLS = [
+    ["emp_no","사번"],["role_level","직책"],["dept","소속"],
+    ["gap_comp","GAP 큰 역량"],["surprise_fb","예상 못한 피드백"],
+    ["target_comp","집중 성장 역량"],["action_exp","목표 행동"],
+    ["action_how","구체적 실행"],["frequency","실천 빈도"],
+    ["nudge","넛지"],["before_score","Before 점수"],
+    ["success_look","성공의 모습"],["remeasure_ok","재측정 동의"],
+    ["concern","고민/지원 요청"],["wish_programs","희망 교육 프로그램"],
+    ["created_at","제출 일시"],
+  ];
+
+  async function load(){
+    const btn=document.getElementById("btn");
+    const info=document.getElementById("info");
+    const cnt=document.getElementById("cnt");
+    btn.disabled=true; btn.textContent="불러오는 중…"; info.textContent="";
+    try {
+      const snap=await getDocs(collection(db,"dev_plan"));
+      const rows=[];
+      snap.forEach(doc=>{
+        const d=doc.data(); const row={};
+        COLS.forEach(([k,])=>{
+          let v=d[k];
+          if(v===undefined||v===null) v="";
+          if(typeof v==="boolean") v=v?"예":"아니오";
+          if(v&&typeof v==="object"&&v.toDate){
+            v=v.toDate().toLocaleString("ko-KR",{timeZone:"Asia/Seoul"});
+          }
+          row[k]=v;
+        });
+        rows.push(row);
+      });
+      cnt.textContent=rows.length+"명";
+      window._rows=rows;
+      const byRole={}; const byComp={};
+      rows.forEach(r=>{
+        byRole[r.role_level]=(byRole[r.role_level]||0)+1;
+        byComp[r.target_comp]=(byComp[r.target_comp]||0)+1;
+      });
+      let summary="<b>직책별</b>: ";
+      summary+=Object.entries(byRole).map(([k,v])=>`${k} ${v}명`).join(" / ");
+      summary+="<br><b>역량별 TOP5</b>: ";
+      summary+=Object.entries(byComp).sort((a,b)=>b[1]-a[1]).slice(0,5)
+        .map(([k,v])=>`${k}(${v}명)`).join(", ");
+      info.innerHTML=summary;
+      btn.textContent="✅ "+rows.length+"명 로드 완료 — Excel 다운로드";
+      btn.disabled=false; btn.onclick=()=>exportExcel(rows);
+    } catch(e){
+      btn.textContent="다시 시도"; btn.disabled=false;
+      info.textContent="오류: "+e.message; console.error(e);
+    }
+  }
+
+  function exportExcel(rows){
+    const header=COLS.map(([,h])=>h);
+    const keys=COLS.map(([k,])=>k);
+    const data=[header,...rows.map(r=>keys.map(k=>r[k]))];
+    const ws=XLSX.utils.aoa_to_sheet(data);
+    const wscols=[8,6,14,16,28,16,28,28,8,14,8,28,8,28,32,16];
+    ws["!cols"]=wscols.map(w=>({wch:w}));
+    const range=XLSX.utils.decode_range(ws["!ref"]);
+    for(let c=range.s.c;c<=range.e.c;c++){
+      const addr=XLSX.utils.encode_cell({r:0,c});
+      if(!ws[addr]) continue;
+      ws[addr].s={fill:{patternType:"solid",fgColor:{rgb:"1E2761"}},
+        font:{bold:true,color:{rgb:"FFFFFF"}},alignment:{horizontal:"center"}};
+    }
+    const wb=XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb,ws,"개발계획_응답");
+    const today=new Date().toLocaleDateString("ko-KR").replace(/\. /g,"-").replace(".","");
+    XLSX.writeFile(wb,`리더십개발계획_${today}.xlsx`);
+  }
+
+  window.addEventListener("DOMContentLoaded",()=>{
+    document.getElementById("btn").onclick=load;
+  });
+</script>
+<style>
+  :root{--navy:#1E2761;--ice:#EEF2FB;--green:#2E9E6B;--coral:#E15C4B}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;
+       background:#F5F7FB;color:#2D3748;min-height:100vh;
+       display:flex;align-items:center;justify-content:center}
+  .card{background:#fff;border-radius:16px;padding:40px 44px;max-width:520px;width:90%;
+        box-shadow:0 4px 24px rgba(30,39,97,.10);text-align:center}
+  .logo{font-size:12px;font-weight:700;letter-spacing:1.5px;color:var(--navy);opacity:.6;margin-bottom:8px}
+  h1{font-size:20px;font-weight:800;color:var(--navy);margin:0 0 6px}
+  p{font-size:13px;color:#6B7280;margin:0 0 28px}
+  #cnt{font-size:36px;font-weight:800;color:var(--navy);margin:0 0 6px;display:block;min-height:44px}
+  #info{font-size:12.5px;color:#4A5568;background:var(--ice);border-radius:8px;
+        padding:10px 14px;margin:0 0 24px;text-align:left;min-height:36px;line-height:1.7}
+  #btn{background:var(--navy);color:#fff;border:0;border-radius:10px;
+       padding:14px 28px;font-size:15px;font-weight:800;cursor:pointer;
+       width:100%;font-family:inherit;transition:background .15s}
+  #btn:hover:not(:disabled){background:#2E3A78}
+  #btn:disabled{opacity:.5;cursor:default}
+  .note{font-size:11px;color:#9AA6C9;margin-top:14px}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">한화시스템 · 2026 LEADERSHIP</div>
+  <h1>리더십 개발 계획 내보내기</h1>
+  <p>Firebase에서 응답 데이터를 불러와 Excel 파일로 저장합니다.</p>
+  <span id="cnt"></span>
+  <div id="info">버튼을 누르면 데이터를 불러옵니다.</div>
+  <button id="btn">🔄 데이터 불러오기</button>
+  <div class="note">※ 관리자 전용 파일입니다. 외부 공유 금지</div>
+</div>
+</body>
+</html>
