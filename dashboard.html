@@ -1,0 +1,418 @@
+<title>리더십 개발 현황</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap">
+<style>
+:root {
+  --navy: #1E2761;
+  --navy2: #2E3A78;
+  --accent: #3B6FD4;
+  --green: #2E9E6B;
+  --green-bg: #E6F5EE;
+  --coral: #E15C4B;
+  --coral-bg: #FBEAE7;
+  --amber: #D4900A;
+  --amber-bg: #FFF3DC;
+  --bg: #F0F3FA;
+  --card: #FFFFFF;
+  --ink: #1A2035;
+  --ink2: #3D4A6B;
+  --muted: #6B7A9F;
+  --line: #DDE3F0;
+  --ice: #CADCFC;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111827;
+    --card: #1F2937;
+    --ink: #F1F5F9;
+    --ink2: #CBD5E1;
+    --muted: #94A3B8;
+    --line: #374151;
+    --ice: #1E3A5F;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111827;
+  --card: #1F2937;
+  --ink: #F1F5F9;
+  --ink2: #CBD5E1;
+  --muted: #94A3B8;
+  --line: #374151;
+  --ice: #1E3A5F;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Noto Sans KR", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  padding: 0 16px;
+  padding-block: 0;
+  min-height: 100%;
+}
+header {
+  background: var(--navy);
+  color: #fff;
+  padding: 20px 24px;
+  margin: 0 -16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.header-left .eyebrow { font-size: 11px; letter-spacing: 1.5px; font-weight: 700; color: var(--ice); margin-bottom: 4px; }
+.header-left h1 { font-size: 20px; font-weight: 800; }
+.header-right { display: flex; align-items: center; gap: 10px; }
+#refresh-btn {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background .15s;
+}
+#refresh-btn:hover { background: rgba(255,255,255,0.22); }
+#last-updated { font-size: 11px; color: rgba(255,255,255,0.55); }
+
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+/* KPI tiles */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+@media (max-width: 700px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+.kpi {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+}
+.kpi .k-label { font-size: 12px; color: var(--muted); font-weight: 500; margin-bottom: 8px; }
+.kpi .k-val { font-size: 32px; font-weight: 800; color: var(--navy); font-variant-numeric: tabular-nums; line-height: 1; margin-bottom: 4px; }
+:root[data-theme="dark"] .kpi .k-val,
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .kpi .k-val { color: #93C5FD; } }
+.kpi .k-sub { font-size: 12px; color: var(--muted); }
+.kpi.highlight { background: var(--navy); border-color: var(--navy); }
+.kpi.highlight .k-label { color: rgba(255,255,255,0.6); }
+.kpi.highlight .k-val { color: #fff; }
+.kpi.highlight .k-sub { color: rgba(255,255,255,0.5); }
+.kpi .k-bar { margin-top: 10px; height: 6px; background: var(--line); border-radius: 99px; overflow: hidden; }
+.kpi .k-bar-fill { height: 100%; border-radius: 99px; background: var(--accent); transition: width .6s ease; }
+
+/* Charts area */
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+@media (max-width: 900px) { .charts-grid { grid-template-columns: 1fr; } }
+.card {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 20px;
+  border: 1px solid var(--line);
+}
+.card-title { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 16px; }
+
+/* Bar chart horizontal */
+.bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.bar-row:last-child { margin-bottom: 0; }
+.bar-label { font-size: 12px; color: var(--ink2); white-space: nowrap; width: 110px; flex-shrink: 0; overflow: hidden; text-overflow: ellipsis; }
+.bar-track { flex: 1; height: 10px; background: var(--line); border-radius: 99px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 99px; transition: width .6s ease; }
+.bar-count { font-size: 12px; font-weight: 700; color: var(--ink2); width: 32px; text-align: right; font-variant-numeric: tabular-nums; flex-shrink: 0; }
+
+/* Donut */
+.donut-wrap { display: flex; align-items: center; gap: 20px; }
+.donut-legend { display: flex; flex-direction: column; gap: 10px; }
+.legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.legend-val { font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* Wide comp chart */
+.comp-card {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  margin-bottom: 24px;
+}
+
+/* Loading */
+#loading {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--muted);
+  font-size: 15px;
+}
+.spinner {
+  display: inline-block;
+  width: 28px; height: 28px;
+  border: 3px solid var(--line);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  margin-bottom: 12px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+#error-msg {
+  background: var(--coral-bg);
+  color: var(--coral);
+  border-radius: 10px;
+  padding: 14px 18px;
+  font-size: 13.5px;
+  margin-bottom: 20px;
+  display: none;
+}
+#main-content { display: none; }
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 11px;
+  padding: 20px 0 32px;
+}
+</style>
+
+<header>
+  <div class="header-left">
+    <div class="eyebrow">한화시스템 · 2026 LEADERSHIP</div>
+    <h1>리더십 개발 계획 현황 대시보드</h1>
+  </div>
+  <div class="header-right">
+    <span id="last-updated"></span>
+    <button id="refresh-btn" onclick="loadData()">↻ 새로고침</button>
+  </div>
+</header>
+
+<div id="error-msg"></div>
+<div id="loading"><div class="spinner"></div><br>데이터 불러오는 중...</div>
+<div id="main-content">
+  <!-- KPI -->
+  <div class="section-label">전체 현황</div>
+  <div class="kpi-grid">
+    <div class="kpi highlight">
+      <div class="k-label">전체 대상</div>
+      <div class="k-val">80</div>
+      <div class="k-sub">명</div>
+    </div>
+    <div class="kpi">
+      <div class="k-label">응답 완료</div>
+      <div class="k-val" id="kpi-count">—</div>
+      <div class="k-sub">명</div>
+      <div class="k-bar"><div class="k-bar-fill" id="kpi-bar" style="width:0%"></div></div>
+    </div>
+    <div class="kpi">
+      <div class="k-label">응답률</div>
+      <div class="k-val" id="kpi-rate">—</div>
+      <div class="k-sub">% (목표 100%)</div>
+      <div class="k-bar"><div class="k-bar-fill" id="kpi-rate-bar" style="width:0%;background:var(--green)"></div></div>
+    </div>
+    <div class="kpi">
+      <div class="k-label">미응답</div>
+      <div class="k-val" id="kpi-remain">—</div>
+      <div class="k-sub">명 남음</div>
+    </div>
+  </div>
+
+  <!-- Comp chart (wide) -->
+  <div class="comp-card">
+    <div class="card-title">집중 성장 역량 선택 분포</div>
+    <div id="comp-chart"></div>
+  </div>
+
+  <!-- 3-col charts -->
+  <div class="charts-grid">
+    <div class="card">
+      <div class="card-title">직책별 응답 현황</div>
+      <div class="donut-wrap">
+        <svg id="donut-svg" width="110" height="110" viewBox="0 0 110 110"></svg>
+        <div class="donut-legend" id="donut-legend"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">실천 빈도</div>
+      <div id="freq-chart"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">희망 교육 프로그램</div>
+      <div id="prog-chart"></div>
+    </div>
+  </div>
+
+  <!-- GAP 역량 -->
+  <div class="comp-card">
+    <div class="card-title">GAP 큰 역량 (Blind Spot)</div>
+    <div id="gap-chart"></div>
+  </div>
+</div>
+
+<footer>한화시스템 HRD 인재확보팀 · 관리자 전용</footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const cfg = {
+  apiKey: "AIzaSyDCr3zZlA0ZAnGDYf8i4LfJw9fZc_QXySM",
+  authDomain: "leadership-action-lab.firebaseapp.com",
+  projectId: "leadership-action-lab",
+  storageBucket: "leadership-action-lab.firebasestorage.app",
+  messagingSenderId: "373715829334",
+  appId: "1:373715829334:web:57fca290342251c372b1f7"
+};
+const app = initializeApp(cfg);
+const db = getFirestore(app);
+
+const TOTAL = 80;
+const COMPS = ["전략적 사고","기술 기반 사업 전환","전략 방향 정렬","판단·의사결정","목표·성과관리","리스크·위기 관리","인재 육성·코칭","조직 몰입·신뢰 구축","조직 운영·협업 구축"];
+const FREQS = ["매일","주 2~3회","주 1회","격주 1회","월 1회"];
+const PALETTE = ["#1E2761","#3B6FD4","#2E9E6B","#E15C4B","#D4900A","#7C3AED","#0891B2","#DB2777","#65A30D"];
+
+function count(arr, key) {
+  const m = {};
+  arr.forEach(r => {
+    const v = r[key] || "";
+    m[v] = (m[v] || 0) + 1;
+  });
+  return m;
+}
+
+function countMulti(arr, key) {
+  const m = {};
+  arr.forEach(r => {
+    const v = r[key] || "";
+    v.split(",").map(s => s.trim()).filter(Boolean).forEach(s => {
+      m[s] = (m[s] || 0) + 1;
+    });
+  });
+  return m;
+}
+
+function hbar(container, data, keys, colors, maxVal) {
+  container.innerHTML = "";
+  keys.forEach((k, i) => {
+    const v = data[k] || 0;
+    const pct = maxVal > 0 ? (v / maxVal * 100).toFixed(1) : 0;
+    const row = document.createElement("div");
+    row.className = "bar-row";
+    row.innerHTML = `<div class="bar-label" title="${k}">${k}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:0%;background:${colors[i % colors.length]}"></div></div>
+      <div class="bar-count">${v}</div>`;
+    container.appendChild(row);
+    requestAnimationFrame(() => {
+      row.querySelector(".bar-fill").style.width = pct + "%";
+    });
+  });
+}
+
+function drawDonut(rows) {
+  const byRole = count(rows, "role_level");
+  const cats = [
+    { label: "임원", color: "#1E2761" },
+    { label: "팀장", color: "#3B6FD4" },
+    { label: "기타", color: "#94A3B8" }
+  ].map(c => ({ ...c, val: byRole[c.label] || 0 })).filter(c => c.val > 0);
+
+  const total = cats.reduce((s, c) => s + c.val, 0);
+  const cx = 55, cy = 55, r = 42, ir = 26;
+  let angle = -Math.PI / 2;
+  let paths = "";
+
+  cats.forEach(c => {
+    const slice = (c.val / total) * 2 * Math.PI;
+    const x1 = cx + r * Math.cos(angle), y1 = cy + r * Math.sin(angle);
+    const x2 = cx + r * Math.cos(angle + slice), y2 = cy + r * Math.sin(angle + slice);
+    const ix1 = cx + ir * Math.cos(angle), iy1 = cy + ir * Math.sin(angle);
+    const ix2 = cx + ir * Math.cos(angle + slice), iy2 = cy + ir * Math.sin(angle + slice);
+    const large = slice > Math.PI ? 1 : 0;
+    paths += `<path d="M${x1},${y1} A${r},${r} 0 ${large} 1 ${x2},${y2} L${ix2},${iy2} A${ir},${ir} 0 ${large} 0 ${ix1},${iy1} Z" fill="${c.color}" stroke="var(--card)" stroke-width="2"/>`;
+    angle += slice;
+  });
+
+  document.getElementById("donut-svg").innerHTML = paths +
+    `<text x="55" y="51" text-anchor="middle" font-size="14" font-weight="800" fill="var(--ink)" font-family="inherit">${total}</text>
+     <text x="55" y="64" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="inherit">명 응답</text>`;
+
+  const legend = document.getElementById("donut-legend");
+  legend.innerHTML = cats.map(c =>
+    `<div class="legend-item"><span class="legend-dot" style="background:${c.color}"></span><span>${c.label}</span><span class="legend-val" style="margin-left:4px">${c.val}명</span></div>`
+  ).join("");
+}
+
+window.loadData = async function() {
+  document.getElementById("loading").style.display = "block";
+  document.getElementById("main-content").style.display = "none";
+  document.getElementById("error-msg").style.display = "none";
+
+  try {
+    const snap = await getDocs(collection(db, "dev_plan"));
+    const rows = [];
+    snap.forEach(d => rows.push(d.data()));
+    const n = rows.length;
+
+    // KPI
+    document.getElementById("kpi-count").textContent = n;
+    const rate = Math.round(n / TOTAL * 100);
+    document.getElementById("kpi-rate").textContent = rate;
+    document.getElementById("kpi-remain").textContent = TOTAL - n;
+    setTimeout(() => {
+      document.getElementById("kpi-bar").style.width = (n / TOTAL * 100) + "%";
+      document.getElementById("kpi-rate-bar").style.width = rate + "%";
+    }, 50);
+
+    // 집중 성장 역량
+    const compData = count(rows, "target_comp");
+    const compMax = Math.max(...COMPS.map(k => compData[k] || 0), 1);
+    hbar(document.getElementById("comp-chart"), compData, COMPS, PALETTE, compMax);
+
+    // 도넛
+    drawDonut(rows);
+
+    // 실천 빈도
+    const freqData = count(rows, "frequency");
+    const freqMax = Math.max(...FREQS.map(k => freqData[k] || 0), 1);
+    hbar(document.getElementById("freq-chart"), freqData, FREQS, ["#3B6FD4","#3B6FD4","#3B6FD4","#3B6FD4","#3B6FD4"], freqMax);
+
+    // 희망 교육
+    const progData = countMulti(rows, "wish_programs");
+    const progKeys = Object.entries(progData).sort((a,b) => b[1]-a[1]).map(([k]) => k);
+    const progMax = Math.max(...progKeys.map(k => progData[k] || 0), 1);
+    hbar(document.getElementById("prog-chart"), progData, progKeys, ["#2E9E6B","#2E9E6B","#2E9E6B","#2E9E6B","#2E9E6B","#2E9E6B","#2E9E6B"], progMax);
+
+    // GAP 역량
+    const gapData = countMulti(rows, "gap_comp");
+    const gapMax = Math.max(...COMPS.map(k => gapData[k] || 0), 1);
+    hbar(document.getElementById("gap-chart"), gapData, COMPS, ["#E15C4B","#E15C4B","#E15C4B","#E15C4B","#E15C4B","#E15C4B","#E15C4B","#E15C4B","#E15C4B"], gapMax);
+
+    document.getElementById("last-updated").textContent = "업데이트: " + new Date().toLocaleTimeString("ko-KR");
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("main-content").style.display = "block";
+  } catch(e) {
+    document.getElementById("loading").style.display = "none";
+    const err = document.getElementById("error-msg");
+    err.textContent = "오류: " + e.message;
+    err.style.display = "block";
+  }
+};
+
+loadData();
+</script>
